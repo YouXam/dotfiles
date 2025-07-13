@@ -4,6 +4,3 @@ function h;
 	eval $argv
 end
 
-function git;
-	h env git $argv
-end
