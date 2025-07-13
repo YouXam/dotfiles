@@ -3,3 +3,7 @@ function h;
 	set -gx http_proxy http://localhost:7890
 	eval $argv
 end
+
+function git;
+	h env git $argv
+end
