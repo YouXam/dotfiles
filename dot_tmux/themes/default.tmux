@@ -30,4 +30,4 @@ setw -g window-status-style bg=black,fg=blue,default
 # -------------
 set -g status-left ''
 set -g status-right-length 150
-set -g status-right " #[fg=colour160] #[fg=colour69]#(bash ~/.tmux/scripts/remaining_battery.sh) | %H:%M "
+set -g status-right " #[fg=colour160] #[fg=colour69]#(bash ~/.tmux/scripts/info.sh) | %H:%M "
