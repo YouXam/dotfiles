@@ -12,3 +12,4 @@ abbr --add cgc chezmoi git commit
 abbr --add cgpl chezmoi git pull
 abbr --add cgps chezmoi git push
 abbr --add cgs chezmoi git status
+abbr --add cc ccsched

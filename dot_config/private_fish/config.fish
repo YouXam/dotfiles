@@ -1,4 +1,5 @@
 set -gx SHELL fish
+set -gx EDITOR vim
 if status is-interactive
 end
 
