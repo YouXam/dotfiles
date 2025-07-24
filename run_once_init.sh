@@ -91,7 +91,7 @@ configure_apt_proxy() {
 }
 
 # 1. Determine initial proxy setting based on environment
-if [[ -n "$http_proxy" && -n "$https_proxy" && -n "$all_proxy" ]]; then
+if [[ -n "$http_proxy" && -n "$https_proxy" && -n "$all_proxy" && "$http_proxy" == "$https_proxy" && "$http_proxy" == "$all_proxy" ]]; then
   proxy_url="$http_proxy"
   color_echo "$GRAY" "Detected existing proxy settings; using proxy: $proxy_url"
 else
@@ -177,14 +177,60 @@ fish_init() {
   chsh -s `which fish`
 }
 
+claude_code_init() {
+  if ! command -v unzip >/dev/null; then
+    if [[ $OS == "debian" ]]; then
+      apt install -y unzip
+    fi
+  fi
+  if ! command -v fnm >/dev/null; then
+    curl -fsSL https://fnm.vercel.app/install | bash
+  fi
+  FNM_PATH="$HOME/.local/share/fnm/fnm"
+  if [[ $OS == "mac" ]]; then
+    FNM_PATH="/opt/homebrew/bin/fnm"
+  fi
+  rm -rf $HOME/.config/fish/conf.d/fnm.fish
+  $FNM_PATH install --lts
+  $FNM_PATH exec --using=`$FNM_PATH current` npm install -g @anthropic-ai/claude-code
+  CLAUDE_PATH="$HOME/.config/fish/functions/claude.fish"
+  cat > "$CLAUDE_PATH" <<EOF
+function claude
+  set -lx http_proxy http://localhost:7890
+  set -lx https_proxy http://localhost:7890
+  env claude \$argv
+end
+EOF
+  vim "$CLAUDE_PATH"
+}
+
 debian_init() {
   color_echo "$BLUE" "Running Debian initialization..."
   chmod 1777 /tmp
-  apt update
-  apt install -y tmux vim wget
+  packages=(
+    tmux
+    vim
+    wget
+  )
+  run_apt_install=false
+  for pkg in "${packages[@]}"; do
+    if ! command -v "$pkg" >/dev/null; then
+      run_apt_install=true
+      break
+    fi
+  done
+  if $run_apt_install; then
+    apt update
+    apt install -y tmux vim wget
+  fi
   if ! command -v fish >/dev/null; then
     ask_and_run "Install fish shell?" fish_init
   fi
+  if ! type claude >/dev/null; then
+    ask_and_run "Install Claude Code?" claude_code_init
+  fi
+    ask_and_run "Install Claude Code?" claude_code_init
+
   color_echo "$GREEN" "Debian setup complete."
 }
 
