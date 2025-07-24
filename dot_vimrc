@@ -1,0 +1,13 @@
+set nu
+set ls=2
+syntax on
+set ts=4
+set mouse=a
+augroup vimStartup
+    au!
+    autocmd BufReadPost *
+      \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+      \ |   exe "normal! g`\""
+      \ | endif
+
+augroup END
