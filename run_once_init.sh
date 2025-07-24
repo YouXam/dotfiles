@@ -5,13 +5,13 @@ set -e
 PROFILE="$HOME/.profile"
 
 # Color definitions for highlighting
-RED='\e[31m'
-YELLOW='\e[33m'
-GRAY='\e[90m'
-GREEN='\e[32m'
-CYAN='\e[36m'
-RESET='\e[0m'
-BLUE='\e[34m'
+RED='\033[31m'
+YELLOW='\033[33m'
+GRAY='\033[90m'
+GREEN='\033[32m'
+CYAN='\033[36m'
+RESET='\033[0m'
+BLUE='\033[34m'
 
 # Utility: colored echo
 color_echo() {
