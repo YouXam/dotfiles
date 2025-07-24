@@ -229,8 +229,6 @@ debian_init() {
   if ! type claude >/dev/null; then
     ask_and_run "Install Claude Code?" claude_code_init
   fi
-    ask_and_run "Install Claude Code?" claude_code_init
-
   color_echo "$GREEN" "Debian setup complete."
 }
 
