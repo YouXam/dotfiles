@@ -192,6 +192,7 @@ claude_code_init() {
   fi
   rm -rf $HOME/.config/fish/conf.d/fnm.fish
   $FNM_PATH install --lts
+  eval $($FNM_PATH env)
   $FNM_PATH exec --using=`$FNM_PATH current` npm install -g @anthropic-ai/claude-code
   CLAUDE_PATH="$HOME/.config/fish/functions/claude.fish"
   cat > "$CLAUDE_PATH" <<EOF
