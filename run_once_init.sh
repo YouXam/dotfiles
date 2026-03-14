@@ -177,32 +177,8 @@ fish_init() {
   chsh -s `which fish`
 }
 
-claude_code_init() {
-  if ! command -v unzip >/dev/null; then
-    if [[ $OS == "debian" ]]; then
-      apt install -y unzip
-    fi
-  fi
-  if ! command -v fnm >/dev/null; then
-    curl -fsSL https://fnm.vercel.app/install | bash
-  fi
-  FNM_PATH="$HOME/.local/share/fnm/fnm"
-  if [[ $OS == "mac" ]]; then
-    FNM_PATH="/opt/homebrew/bin/fnm"
-  fi
-  rm -rf $HOME/.config/fish/conf.d/fnm.fish
-  $FNM_PATH install --lts
-  eval $($FNM_PATH env)
-  $FNM_PATH exec --using=`$FNM_PATH current` npm install -g @anthropic-ai/claude-code
-  CLAUDE_PATH="$HOME/.config/fish/functions/claude.fish"
-  cat > "$CLAUDE_PATH" <<EOF
-function claude
-  set -lx http_proxy http://localhost:7890
-  set -lx https_proxy http://localhost:7890
-  env claude \$argv
-end
-EOF
-  vim "$CLAUDE_PATH"
+opencode_init() {
+  curl -fsSL https://opencode.ai/install | bash
 }
 
 debian_init() {
@@ -227,8 +203,8 @@ debian_init() {
   if ! command -v fish >/dev/null; then
     ask_and_run "Install fish shell?" fish_init
   fi
-  if ! type claude >/dev/null; then
-    ask_and_run "Install Claude Code?" claude_code_init
+  if ! type opencode >/dev/null; then
+    ask_and_run "Install opencode?" opencode_init
   fi
   color_echo "$GREEN" "Debian setup complete."
 }
